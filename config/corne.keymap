@@ -12,15 +12,6 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/pointing.h>
 
-// This allows quick and fast key press on homerow while maintaining not to long press to activate homerow mods
-
-&mt {
-    quick-tap-ms = <100>;
-    global-quick-tap;
-    flavor = "tap-preferred";
-    tapping-term-ms = <170>;
-};
-
 / {
     combos {
         compatible = "zmk,combos";
@@ -57,11 +48,12 @@
             bindings = <&kp>, <&kp>;
 
             #binding-cells = <2>;
-            tapping-term-ms = <200>;
-            flavor = "tap-preferred";
+            tapping-term-ms = <220>;
+            quick-tap-ms = <125>;
+            require-prior-idle-ms = <90>;
+            flavor = "balanced";
             hold-trigger-on-release;
             hold-trigger-key-positions = <0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29 36 37 38>;
-            hold-while-undecided;
         };
 
         HML: HML {
@@ -70,11 +62,40 @@
             bindings = <&kp>, <&kp>;
 
             #binding-cells = <2>;
-            tapping-term-ms = <200>;
-            flavor = "tap-preferred";
+            tapping-term-ms = <220>;
+            quick-tap-ms = <125>;
+            require-prior-idle-ms = <90>;
+            flavor = "balanced";
             hold-trigger-on-release;
             hold-trigger-key-positions = <6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35 39 40 41>;
-            hold-while-undecided;
+        };
+
+        HMShiftR: HMShiftR {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HMSR";
+            bindings = <&kp>, <&kp>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <190>;
+            quick-tap-ms = <100>;
+            require-prior-idle-ms = <60>;
+            flavor = "balanced";
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29 36 37 38>;
+        };
+
+        HMShiftL: HMShiftL {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HMSL";
+            bindings = <&kp>, <&kp>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <190>;
+            quick-tap-ms = <100>;
+            require-prior-idle-ms = <60>;
+            flavor = "balanced";
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35 39 40 41>;
         };
 
         CustomLT: CustomLT {
@@ -87,6 +108,7 @@
             flavor = "tap-preferred";
             quick-tap-ms = <75>;
             hold-while-undecided;
+            hold-trigger-on-release;
         };
     };
 
@@ -103,7 +125,7 @@
             display-name = "Base";
             bindings = <
 &trans          &kp Q        &kp W        &kp F         &kp P         &kp B        &kp J    &kp L             &kp U         &kp Y        &kp SEMICOLON  &trans
-&trans          &HML LGUI A  &HML LALT R  &HML LCTRL S  &HML LSHFT T  &kp G        &kp M    &HMR RSHFT N      &HMR RCTRL E  &HMR RALT I  &HMR RGUI O    &trans
+&trans          &HML LGUI A  &HML LALT R  &HML LCTRL S  &HMShiftL LSHFT T  &kp G        &kp M    &HMShiftR RSHFT N      &HMR RCTRL E  &HMR RALT I  &HMR RGUI O    &trans
 &kp LEFT_SHIFT  &kp Z        &kp X        &kp C         &kp D         &kp V        &kp K    &kp H             &kp COMMA     &kp DOT      &kp FSLH       &kp RIGHT_SHIFT
                                           &kp LGUI      &mo 1         &kp SPACE    &kp RET  &CustomLT 2 BSPC  &kp RALT
             >;
@@ -143,14 +165,14 @@
 
         device {
             // -----------------------------------------------------------------------------------------
-            // |      | CAPS|BRTDN|BRTUP|     |     |   | BT0 | BT1 | BT2 |     | ESC |      |
+            // |      | CAPS|BRTDN|BRTUP|     |     |   | BT0 | BT1 | BT2 | BT3 | ESC |      |
             // |      | PREV| NEXT|VOLDN|VOLUP|PLAY |   |MS_L |MS_DN|MS_UP|MS_R |     |      |
             // |      |     |     |LCLK |RCLK |     |   |SC_L |SC_DN|SC_UP|SC_R |     |BTCLR |
             //                    |     |     |     |   |     |     |     |
 
             display-name = "Device";
             bindings = <
-&none  &kp CAPSLOCK  &kp C_BRIGHTNESS_DEC  &kp C_BRIGHTNESS_INC  &none         &none       &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2  &none            &kp ESC  &none
+&none  &kp CAPSLOCK  &kp C_BRIGHTNESS_DEC  &kp C_BRIGHTNESS_INC  &none         &none       &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2  &bt BT_SEL 3     &kp ESC  &none
 &none  &kp C_PREV    &kp C_NEXT            &kp C_VOL_DN          &kp C_VOL_UP  &kp C_PP    &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_UP  &mmv MOVE_RIGHT  &none    &none
 &none  &none         &none                 &mkp LCLK             &mkp RCLK     &trans      &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &none    &bt BT_CLR
                                            &none                 &none         &none       &none           &none           &none
